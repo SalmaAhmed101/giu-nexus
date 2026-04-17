@@ -9,7 +9,7 @@ Hugging Face AI for skill extraction and job classification.
 - [Member 2 Lojy Shawky]
 - [Member 3 Name]
 - [Member 4 Name]
-- [Member 5 Name]
+- [Member 5 Malak Tarek]
 
 ## Tech Stack
 MongoDB, Express.js, React, Node.js, Hugging Face API
