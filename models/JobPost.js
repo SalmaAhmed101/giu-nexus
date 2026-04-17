@@ -38,6 +38,28 @@ const JobPostSchema = new mongoose.Schema(
       // op
     },
 
+    // doen auto by ai 
+    category: {
+      type: String,
+      enum: ['Frontend', 'Backend', 'AI/ML', 'DevOps', 'Data Engineering', 'Other'],
+    },
+
+    totalSlots: {
+      type: Number,
+    },
+
+    status: {
+      type: String,
+      enum: ['open', 'closed'],
+      default: 'open',
+    },
+
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
+
   },
   { timestamps: true }
 );
