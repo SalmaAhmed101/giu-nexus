@@ -1,15 +1,164 @@
 # GIU Nexus — AI-Powered Career & Talent Platform
 
-A full-stack MERN web application that connects university
-students with internship and job opportunities, powered by
-Hugging Face AI for skill extraction and job classification.
-
 ## Team Members
-- [Member 1 Salma Ahmed] (Team Leader)
-- [Member 2 Lojy Shawky]
-- [Member 3 Name]
-- [Member 4 Name]
-- [Member 5 Malak Tarek]
+- [Member 1] (Team Leader) Salma Ahmed 16007446 T18
+- [Member 2] Lojy Shawky 16009778 T19
+- [Member 3] Nourine Rasmy 16006612 T17
+- [Member 4] Engy Rashdan 16007284 T15
+- [Member 5] Malak Tarek 16006062 T17
+
+A full-stack MERN web application that connects university students with internship
+and job opportunities, powered by Hugging Face AI for skill extraction and job
+classification.
+
+**The problem it solves:**
+- Students waste time browsing irrelevant job listings
+- Recruiters manually tag jobs and miss good candidates
+- No centralized platform exists for GIU-specific opportunities
+
+**How it solves it:**
+- AI reads a student's bio and extracts their skills automatically
+- AI classifies every job post into the correct technical category on creation
+- A recommendation engine ranks jobs by how well they match each student's skill set
+
+---
+
+## User Roles
+
+There are three distinct user types, each with different permissions and views.
+
+### Job Seeker (Standard User)
+- Register and create a profile with bio and profile picture
+- Receive AI-generated skill chips based on their written bio
+- Browse all approved and open job listings
+- Apply to jobs with an optional cover letter
+- Track all applications and their current statuses
+- View personalized job recommendations on the homepage
+
+### Recruiter (Company Representative)
+- Register and wait for admin approval before posting
+- Create, edit, and delete their own job listings
+- Have their job posts auto-classified by AI on creation
+- View all applicants per job posting
+- Update application statuses (pending → shortlisted or rejected)
+- Access a dashboard showing all active postings and applicant counts
+
+### System Admin
+- Approve or reject newly registered recruiter accounts
+- Remove flagged or inappropriate job listings
+- View platform-wide analytics and summary statistics
+- Full visibility over all users, jobs, and applications
+
+---
+
+## Features
+
+### Task 1
+- [ ] Git repository with branch-per-member workflow
+- [ ] Pull Request based merging with peer review
+- [ ] Mongoose schema design for Users, JobPosts, and Applications
+- [ ] README and .gitignore
+
+### Task 2
+- [ ] Express server setup
+- [ ] User authentication with JWT and bcrypt
+- [ ] Role-based access control middleware
+- [ ] CRUD operations for users, jobs, and applications
+- [ ] Hugging Face NER integration for skill extraction
+- [ ] Hugging Face zero-shot classification for job categories
+- [ ] Sentence embedding model for job recommendations
+
+### Task 3
+- [ ] React project setup with routing
+- [ ] Student registration, login, and profile pages
+- [ ] Job listings browse and filter page
+- [ ] Application submission and tracking UI
+- [ ] Recruiter dashboard
+- [ ] Admin panel
+- [ ] AI result rendering (skill chips, recommended jobs)
+
+---
+
+## Milestones
+
+### Task 1 — Schema Design *(Due: April 20, 2026)*
+- Set up GitHub repo with correct collaborators
+- Each member creates own feature branch
+- All three Mongoose schemas designed and merged via PRs
+- README and .gitignore present
+
+### Task 2 — Backend Development *(Date TBD)*
+- Express server with full REST API
+- JWT authentication and role-based access control
+- All CRUD operations functional
+- Hugging Face API integrated for all three AI features
+
+### Task 3 — Frontend Development *(Date TBD)*
+- React app with all user flows implemented
+- Connected to backend API
+- AI results rendered in the UI (skill chips, recommended jobs)
+
+---
 
 ## Tech Stack
-MongoDB, Express.js, React, Node.js, Hugging Face API
+
+| Layer | Technology | Purpose |
+|-------|------------|---------|
+| Frontend | React.js | User interface and routing |
+| Backend | Node.js + Express.js | REST API and server logic |
+| Database | MongoDB + Mongoose | Data storage and schema modeling |
+| Authentication | JWT + bcrypt | Secure login and password hashing |
+| AI / ML | Hugging Face Inference API | Skill extraction, job classification, recommendations |
+| Version Control | Git + GitHub | Collaboration and code management |
+
+---
+
+## Project Structure
+giu-nexus/
+│
+├── models/                        # Task 1 — Mongoose schemas
+│   ├── User.js                    # Student, Recruiter, Admin schema
+│   ├── JobPost.js                 # Job listing schema
+│   └── Application.js             # Application tracking schema
+│
+├── routes/                        # Task 2 — Express route handlers
+│   ├── auth.routes.js             # Register, login
+│   ├── user.routes.js             # Profile management
+│   ├── job.routes.js              # Job CRUD
+│   └── application.routes.js      # Apply, track, update status
+│
+├── controllers/                   # Task 2 — Business logic
+│   ├── auth.controller.js
+│   ├── user.controller.js
+│   ├── job.controller.js
+│   └── application.controller.js
+│
+├── middleware/                    # Task 2 — Auth and role guards
+│   ├── auth.middleware.js         # Verify JWT token
+│   └── role.middleware.js         # Check user role permissions
+│
+├── services/                      # Task 2 — Hugging Face API calls
+│   └── huggingface.service.js
+│
+├── client/                        # Task 3 — React frontend
+│   ├── src/
+│   │   ├── pages/
+│   │   ├── components/
+│   │   └── App.jsx
+│   └── package.json
+│
+├── .env                           # Secret keys — never committed
+├── .gitignore
+├── package.json
+├── server.js                      # Task 2 — Express entry point
+└── README.md
+---
+
+## Git Workflow
+
+### Rules
+- Never commit directly to `main`
+- Every change goes through a Pull Request
+- At least one teammate must review and approve before merging
+- Resolve all review comments before merging
+- Write meaningful commit messages — not `"fix"` or `"update"`
