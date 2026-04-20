@@ -81,19 +81,19 @@ There are three distinct user types, each with different permissions and views.
 
 ## Milestones
 
-### Task 1 — Schema Design *(Due: April 20, 2026)*
+### Task 1 — Schema Design 
 - Set up GitHub repo with correct collaborators
 - Each member creates own feature branch
 - All three Mongoose schemas designed and merged via PRs
 - README and .gitignore present
 
-### Task 2 — Backend Development *(Date TBD)*
+### Task 2 — Backend Development 
 - Express server with full REST API
 - JWT authentication and role-based access control
 - All CRUD operations functional
 - Hugging Face API integrated for all three AI features
 
-### Task 3 — Frontend Development *(Date TBD)*
+### Task 3 — Frontend Development 
 - React app with all user flows implemented
 - Connected to backend API
 - AI results rendered in the UI (skill chips, recommended jobs)
@@ -114,6 +114,8 @@ There are three distinct user types, each with different permissions and views.
 ---
 
 ## Project Structure
+
+```text
 giu-nexus/
 │
 ├── models/                        # Task 1 — Mongoose schemas
@@ -152,6 +154,7 @@ giu-nexus/
 ├── package.json
 ├── server.js                      # Task 2 — Express entry point
 └── README.md
+```
 ---
 
 ## Git Workflow

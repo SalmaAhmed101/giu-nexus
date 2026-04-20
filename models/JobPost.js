@@ -35,10 +35,9 @@ const JobPostSchema = new mongoose.Schema(
 
     salary: {
       type: Number,
-      // op
     },
 
-    // doen auto by ai 
+
     category: {
       type: String,
       enum: ['Frontend', 'Backend', 'AI/ML', 'DevOps', 'Data Engineering', 'Other'],
@@ -46,6 +45,7 @@ const JobPostSchema = new mongoose.Schema(
 
     totalSlots: {
       type: Number,
+      min: 1 
     },
 
     status: {
