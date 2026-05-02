@@ -116,43 +116,35 @@ There are three distinct user types, each with different permissions and views.
 ## Project Structure
 
 ```text
-giu-nexus/
-│
-├── models/                        # Task 1 — Mongoose schemas
-│   ├── User.js                    # Student, Recruiter, Admin schema
-│   ├── JobPost.js                 # Job listing schema
-│   └── Application.js             # Application tracking schema
-│
-├── routes/                        # Task 2 — Express route handlers
-│   ├── auth.routes.js             # Register, login
-│   ├── user.routes.js             # Profile management
-│   ├── job.routes.js              # Job CRUD
-│   └── application.routes.js      # Apply, track, update status
-│
-├── controllers/                   # Task 2 — Business logic
-│   ├── auth.controller.js
-│   ├── user.controller.js
-│   ├── job.controller.js
-│   └── application.controller.js
-│
-├── middleware/                    # Task 2 — Auth and role guards
-│   ├── auth.middleware.js         # Verify JWT token
-│   └── role.middleware.js         # Check user role permissions
-│
-├── services/                      # Task 2 — Hugging Face API calls
-│   └── huggingface.service.js
-│
-├── client/                        # Task 3 — React frontend
-│   ├── src/
-│   │   ├── pages/
-│   │   ├── components/
-│   │   └── App.jsx
-│   └── package.json
-│
-├── .env                           # Secret keys — never committed
-├── .gitignore
-├── package.json
-├── server.js                      # Task 2 — Express entry point
+server/
+├── config/
+│ └── db.js # MongoDB connection helper
+├── models/
+│ ├── User.js # User model
+│ ├── JobPost.js # Job post model
+│ └── Application.js # Application model
+├── controllers/
+│ ├── authController.js # Authentication logic
+│ ├── userController.js # User management
+│ ├── jobController.js # Job operations
+│ ├── applicationController.js # Application handling
+│ └── profileController.js # Profile management
+├── routes/
+│ ├── authRoutes.js # Authentication endpoints
+│ ├── userRoutes.js # User endpoints
+│ ├── jobRoutes.js # Job endpoints
+│ ├── applicationRoutes.js # Application endpoints
+│ └── profileRoutes.js # Profile endpoints
+├── middleware/
+│ ├── auth.js # Authentication & authorization
+│ └── errorHandler.js # Error handling middleware
+├── services/
+│ ├── hfService.js # HuggingFace client singleton
+│ └── emailService.js # Nodemailer helper
+├── server.js # Main application entry point
+├── .env # Environment variables
+├── .env.example # Environment variables template
+├── .gitignore # Git ignore rules
 └── README.md
 ```
 ---
