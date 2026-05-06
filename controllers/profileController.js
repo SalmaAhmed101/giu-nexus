@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const hf = require('../services/hfService');
 
+// GET /api/v1/profile
 exports.getProfile = async (req, res, next) => {
   try {
     // protect middleware already put the user on req.user
@@ -16,6 +17,7 @@ exports.getProfile = async (req, res, next) => {
   }
 };
 
+// PATCH /api/v1/profile
 exports.updateProfile = async (req, res, next) => {
   try {
     // Only allow these fields to be updated
@@ -37,6 +39,7 @@ exports.updateProfile = async (req, res, next) => {
   }
 };
 
+// PATCH /api/v1/profile/change-password
 exports.changePassword = async (req, res, next) => {
   try {
     const { currentPassword, newPassword } = req.body;
@@ -72,6 +75,7 @@ exports.changePassword = async (req, res, next) => {
   }
 };
 
+// POST /api/v1/profile/extract-skills
 exports.extractSkills = async (req, res, next) => {
   try {
     const user = await User.findById(req.user._id);
