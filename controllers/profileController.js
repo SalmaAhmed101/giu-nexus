@@ -104,10 +104,10 @@ exports.extractSkills = async (req, res, next) => {
       // [{ word: 'React', entity_group: 'B-MISC', score: 0.99 }, ...]
       // We only want B-MISC, I-MISC, B-ORG (technologies and organisations)
       rawExtracted = result
-        .filter(entity =>
-          ['B-MISC', 'I-MISC', 'B-ORG'].includes(entity.entity_group)
+        .filter(entity => 
+          ['MISC', 'ORG', 'B-MISC', 'I-MISC', 'B-ORG'].includes(entity.entity_group || entity.entity)
         )
-        .map(entity => entity.word); // raw, may have duplicates
+        .map(entity => entity.word);
 
       // Remove duplicates using Set
       skills = [...new Set(rawExtracted)];
