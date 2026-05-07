@@ -15,6 +15,7 @@ connectDB();
 // Routes
 app.use('/api/v1/auth', require('./routes/authRoutes'));
 app.use('/api/v1/profile', require('./routes/profileRoutes')); 
+app.use('/api/v1/jobs', require('./routes/jobRoutes'));
 
 // Health check
 app.get('/', (req, res) => {
