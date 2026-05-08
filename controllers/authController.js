@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const sendEmail = require('../services/emailService');
 
+const blacklist = new Set();
+
 const signToken = (id) =>
   jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRE });
 
@@ -12,7 +14,6 @@ exports.register = async (req, res, next) => {
     if (!['jobSeeker', 'recruiter'].includes(role)) {
       return res.status(400).json({ success: false, message: 'Invalid role' });
     }
-    // FIX 1: password min-length check
     if (!password || password.length < 6) {
       return res.status(400).json({ success: false, message: 'Password must be at least 6 characters' });
     }
@@ -60,6 +61,8 @@ exports.login = async (req, res, next) => {
 };
 
 exports.logout = (req, res) => {
+  const token = req.headers.authorization.split(' ')[1];
+  blacklist.add(token);
   res.status(200).json({ success: true, message: 'Logged out successfully' });
 };
 
@@ -71,9 +74,7 @@ exports.forgotPassword = async (req, res, next) => {
     }
     const resetToken = user.getResetPasswordToken();
     await user.save({ validateBeforeSave: false });
-    // FIX 2: use env var instead of hardcoded localhost
     const resetUrl = `${process.env.CLIENT_URL || 'http://localhost:5000'}/api/v1/auth/reset-password/${resetToken}`;
-    // FIX 3: inner try/catch to rollback token if email fails
     try {
       await sendEmail({
         to: user.email,
@@ -94,7 +95,6 @@ exports.forgotPassword = async (req, res, next) => {
 
 exports.resetPassword = async (req, res, next) => {
   try {
-    // FIX 4: password min-length check
     if (!req.body.password || req.body.password.length < 6) {
       return res.status(400).json({ success: false, message: 'Password must be at least 6 characters' });
     }
@@ -120,3 +120,5 @@ exports.resetPassword = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.blacklist = blacklist;
