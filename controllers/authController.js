@@ -12,6 +12,10 @@ exports.register = async (req, res, next) => {
     if (!['jobSeeker', 'recruiter'].includes(role)) {
       return res.status(400).json({ success: false, message: 'Invalid role' });
     }
+    // FIX 1: password min-length check
+    if (!password || password.length < 6) {
+      return res.status(400).json({ success: false, message: 'Password must be at least 6 characters' });
+    }
     const existing = await User.findOne({ email });
     if (existing) {
       return res.status(400).json({ success: false, message: 'Email already in use' });
@@ -67,13 +71,22 @@ exports.forgotPassword = async (req, res, next) => {
     }
     const resetToken = user.getResetPasswordToken();
     await user.save({ validateBeforeSave: false });
-    const resetUrl = `http://localhost:5000/api/v1/auth/reset-password/${resetToken}`;
-    await sendEmail({
-      to: user.email,
-      subject: 'Password Reset',
-      text: `Reset your password here: ${resetUrl}`,
-    });
-    res.status(200).json({ success: true, message: 'Password reset email sent' });
+    // FIX 2: use env var instead of hardcoded localhost
+    const resetUrl = `${process.env.CLIENT_URL || 'http://localhost:5000'}/api/v1/auth/reset-password/${resetToken}`;
+    // FIX 3: inner try/catch to rollback token if email fails
+    try {
+      await sendEmail({
+        to: user.email,
+        subject: 'Password Reset',
+        text: `Reset your password here: ${resetUrl}`,
+      });
+      res.status(200).json({ success: true, message: 'Password reset email sent' });
+    } catch (emailErr) {
+      user.resetPasswordToken = undefined;
+      user.resetPasswordExpire = undefined;
+      await user.save({ validateBeforeSave: false });
+      return next(emailErr);
+    }
   } catch (err) {
     next(err);
   }
@@ -81,6 +94,10 @@ exports.forgotPassword = async (req, res, next) => {
 
 exports.resetPassword = async (req, res, next) => {
   try {
+    // FIX 4: password min-length check
+    if (!req.body.password || req.body.password.length < 6) {
+      return res.status(400).json({ success: false, message: 'Password must be at least 6 characters' });
+    }
     const hashedToken = crypto.createHash('sha256').update(req.params.token).digest('hex');
     const user = await User.findOne({
       resetPasswordToken: hashedToken,
