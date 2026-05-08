@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const hf = require('../services/hfService');
+const cloudinary = require('../config/cloudinary');
 
 // GET /api/v1/profile
 exports.getProfile = async (req, res, next) => {
@@ -21,7 +22,25 @@ exports.updateProfile = async (req, res, next) => {
      const updates = {};
     if (req.body.name) updates.name = req.body.name;
     if (req.body.bio) updates.bio = req.body.bio;
-    if (req.body.profilePicture) updates.profilePicture = req.body.profilePicture;
+
+    // If a file was uploaded, send it to Cloudinary manually
+    if (req.file) {
+      const result = await new Promise((resolve, reject) => {
+        cloudinary.uploader.upload_stream(
+          {
+            folder: 'giu-nexus/profile-pictures',
+            transformation: [{ width: 500, height: 500, crop: 'fill' }],
+          },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          }
+        ).end(req.file.buffer);
+      });
+      updates.profilePicture = result.secure_url; //Cloudinary URL, not req.file.path
+    } else if (req.body.profilePicture) {
+      updates.profilePicture = req.body.profilePicture;
+    }
 
     const updatedUser = await User.findByIdAndUpdate(
       req.user._id,
