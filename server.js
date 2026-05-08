@@ -14,8 +14,8 @@ connectDB();
 
 // Routes
 app.use('/api/v1/auth', require('./routes/authRoutes'));
-app.use('/api/v1/profile', require('./routes/profileRoutes')); 
-
+app.use('/api/v1/profile', require('./routes/profileRoutes'));
+app.use('/api/v1/applications', require('./routes/applicationRoutes'));
 // Health check
 app.get('/', (req, res) => {
   res.json({ message: 'GIU Nexus API is running' });
