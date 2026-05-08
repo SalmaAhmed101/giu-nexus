@@ -14,6 +14,7 @@ const ApplicationSchema = new mongoose.Schema(
     },
     coverLetter: {
       type: String,
+      default: ''
     },
     status: {
       type: String,

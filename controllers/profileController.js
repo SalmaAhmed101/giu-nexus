@@ -1,11 +1,10 @@
 const User = require('../models/User');
 const hf = require('../services/hfService');
+const cloudinary = require('../config/cloudinary');
 
 // GET /api/v1/profile
 exports.getProfile = async (req, res, next) => {
   try {
-    // protect middleware already put the user on req.user
-    // we just return it
     const user = await User.findById(req.user._id);
 
     res.status(200).json({
@@ -20,14 +19,33 @@ exports.getProfile = async (req, res, next) => {
 // PATCH /api/v1/profile
 exports.updateProfile = async (req, res, next) => {
   try {
-    // Only allow these fields to be updated
-    //user cannot update role, status, or password here
-    const { name, bio, profilePicture } = req.body;
+     const updates = {};
+    if (req.body.name) updates.name = req.body.name;
+    if (req.body.bio) updates.bio = req.body.bio;
+
+    // If a file was uploaded, send it to Cloudinary manually
+    if (req.file) {
+      const result = await new Promise((resolve, reject) => {
+        cloudinary.uploader.upload_stream(
+          {
+            folder: 'giu-nexus/profile-pictures',
+            transformation: [{ width: 500, height: 500, crop: 'fill' }],
+          },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          }
+        ).end(req.file.buffer);
+      });
+      updates.profilePicture = result.secure_url; //Cloudinary URL, not req.file.path
+    } else if (req.body.profilePicture) {
+      updates.profilePicture = req.body.profilePicture;
+    }
 
     const updatedUser = await User.findByIdAndUpdate(
-      req.user._id,          // which user to update
-      { name, bio, profilePicture }, // what to update
-      { new: true, runValidators: true } // return updated doc + run schema validators
+      req.user._id,
+      updates,
+      { new: true, runValidators: true }
     );
 
     res.status(200).json({
@@ -43,12 +61,16 @@ exports.updateProfile = async (req, res, next) => {
 exports.changePassword = async (req, res, next) => {
   try {
     const { currentPassword, newPassword } = req.body;
+
     //validate the presence of both fields
     if (!currentPassword || !newPassword) {
         return res.status(400).json({ success: false, message: 'Please provide both passwords' });
     }
-    // We need the password field which is hidden by default (select: false)
-    // So we re-query the user and explicitly ask for it
+
+    if (newPassword.length < 6) {
+        return res.status(400).json({ success: false, message: 'New password must be at least 6 characters' });
+    }
+    //+ forces the password to be included this one time, since in the schema, it is hidden by default (select: false)
     const user = await User.findById(req.user._id).select('+password');
 
 
@@ -61,8 +83,7 @@ exports.changePassword = async (req, res, next) => {
       });
     }
 
-    // Assign new password — the User model's pre('save') hook
-    // will automatically hash it before saving
+    // Assign new password — the User model's pre('save') hook will automatically hash it before saving
     user.password = newPassword;
     await user.save();
 
@@ -89,6 +110,7 @@ exports.extractSkills = async (req, res, next) => {
     }
 
     let skills = user.skills; // fallback: keep existing skills if AI fails
+    let rawExtracted = skills; // fallback for extracted too
 
     try {
       // Send the bio to HuggingFace NER model
@@ -98,30 +120,29 @@ exports.extractSkills = async (req, res, next) => {
       });
 
       // result is an array like:
-      // [{ word: 'React', entity_group: 'MISC', score: 0.99 }, ...]
+      // [{ word: 'React', entity_group: 'B-MISC', score: 0.99 }, ...]
       // We only want B-MISC, I-MISC, B-ORG (technologies and organisations)
-      const extracted = result
-        .filter(entity =>
-          ['B-MISC', 'I-MISC', 'B-ORG'].includes(entity.entity_group)
+      rawExtracted = result
+        .filter(entity => 
+          ['MISC', 'ORG', 'B-MISC', 'I-MISC', 'B-ORG'].includes(entity.entity_group || entity.entity)
         )
         .map(entity => entity.word);
 
       // Remove duplicates using Set
-      skills = [...new Set(extracted)];
+      skills = [...new Set(rawExtracted)];
 
       // Save back to the user's profile
       user.skills = skills;
       await user.save();
     } catch (aiError) {
-      // If HuggingFace is down or fails, don't crash —
-      // just return the existing skills silently
+      // If HuggingFace is down or fails, don't crash —just return the existing skills silently
       console.error('HuggingFace error:', aiError.message);
     }
 
     res.status(200).json({
       success: true,
-      skills,
-      extracted: skills,
+      skills,            // cleaned, saved to profile
+      extracted: rawExtracted, // raw NER output
     });
   } catch (err) {
     next(err);
