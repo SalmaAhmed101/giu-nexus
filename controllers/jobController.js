@@ -71,7 +71,8 @@ const fallbackCategory = (text) => {
 };
 
 // Hugging Face category classifier.
-// This tries to use AI first. If it fails, we use fallbackCategory.
+// First uses keyword rules for obvious cases.
+// If rules cannot decide, then it uses Hugging Face.
 const classifyJobCategory = async (jobText) => {
   const ruleBasedCategory = fallbackCategory(jobText);
 
@@ -81,17 +82,19 @@ const classifyJobCategory = async (jobText) => {
     return ruleBasedCategory;
   }
 
-  // If the rules cannot decide, then use Hugging Face.
   try {
     const result = await hf.zeroShotClassification({
       model: 'facebook/bart-large-mnli',
-      inputs: jobText,
+      inputs: [jobText],
       parameters: {
         candidate_labels: ALLOWED_CATEGORIES
       }
     });
 
-    const category = result.labels && result.labels[0];
+    // Some versions return an array when inputs is an array.
+    // Some may return an object. This handles both safely.
+    const firstResult = Array.isArray(result) ? result[0] : result;
+    const category = firstResult.labels && firstResult.labels[0];
 
     if (ALLOWED_CATEGORIES.includes(category)) {
       return category;
@@ -106,9 +109,14 @@ const classifyJobCategory = async (jobText) => {
 
 // GET /api/v1/jobs
 // Public route: anyone can see jobs.
+// Supports filters + pagination.
 exports.getJobs = async (req, res, next) => {
   try {
     const { keyword, location, type, status } = req.query;
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
 
     const query = {};
 
@@ -133,12 +141,18 @@ exports.getJobs = async (req, res, next) => {
       query.status = status;
     }
 
+    const total = await JobPost.countDocuments(query);
+
     const jobs = await JobPost.find(query)
       .populate('createdBy', 'name email')
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
 
     res.status(200).json({
       success: true,
+      total,
+      page,
       count: jobs.length,
       jobs
     });
@@ -154,7 +168,7 @@ exports.createJob = async (req, res, next) => {
     if (req.user.status !== 'approved') {
       return res.status(403).json({
         success: false,
-        message: 'Recruiter account is not approved yet'
+        message: 'Your account is pending approval. Wait for admin approval before posting jobs.'
       });
     }
 
@@ -195,61 +209,6 @@ exports.createJob = async (req, res, next) => {
       success: true,
       message: 'Job created successfully',
       job
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-// GET /api/v1/jobs/recommended
-// Protected route: only job seekers can get recommendations.
-exports.getRecommendedJobs = async (req, res, next) => {
-  try {
-    const user = await User.findById(req.user._id);
-
-    const userSkills = user.skills || [];
-
-    if (userSkills.length === 0) {
-      return res.status(200).json({
-        success: true,
-        message: 'No skills found on your profile. Add skills to get better recommendations.',
-        jobs: []
-      });
-    }
-
-    const openJobs = await JobPost.find({ status: 'open' })
-      .populate('createdBy', 'name email');
-
-    const recommendedJobs = openJobs.map((job) => {
-      const jobText = `
-        ${job.title}
-        ${job.description}
-        ${job.requirements.join(' ')}
-        ${job.category}
-      `.toLowerCase();
-
-      let matchedSkills = 0;
-
-      userSkills.forEach((skill) => {
-        if (jobText.includes(skill.toLowerCase())) {
-          matchedSkills += 1;
-        }
-      });
-
-      const score = Number((matchedSkills / userSkills.length).toFixed(2));
-
-      return {
-        job,
-        score
-      };
-    });
-
-    recommendedJobs.sort((a, b) => b.score - a.score);
-
-    res.status(200).json({
-      success: true,
-      count: recommendedJobs.length,
-      jobs: recommendedJobs
     });
   } catch (error) {
     next(error);
@@ -381,6 +340,7 @@ exports.deleteJob = async (req, res, next) => {
 
 // POST /api/v1/jobs/:id/save
 // Protected route: job seeker can save or unsave a job.
+// Business rule: only open jobs can be saved.
 exports.toggleSaveJob = async (req, res, next) => {
   try {
     const job = await JobPost.findById(req.params.id);
@@ -389,6 +349,13 @@ exports.toggleSaveJob = async (req, res, next) => {
       return res.status(404).json({
         success: false,
         message: 'Job not found'
+      });
+    }
+
+    if (job.status !== 'open') {
+      return res.status(400).json({
+        success: false,
+        message: 'Cannot save a closed job'
       });
     }
 
