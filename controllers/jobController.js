@@ -32,7 +32,9 @@ const fallbackCategory = (text) => {
     lowerText.includes('express') ||
     lowerText.includes('api') ||
     lowerText.includes('backend') ||
-    lowerText.includes('mongodb')
+    lowerText.includes('mongodb') ||
+    lowerText.includes('rest api') ||
+    lowerText.includes('rest apis')
   ) {
     return 'Backend';
   }
@@ -42,7 +44,9 @@ const fallbackCategory = (text) => {
     lowerText.includes('ai') ||
     lowerText.includes('python') ||
     lowerText.includes('model') ||
-    lowerText.includes('data science')
+    lowerText.includes('data science') ||
+    lowerText.includes('tensorflow') ||
+    lowerText.includes('deep learning')
   ) {
     return 'AI/ML';
   }
@@ -52,7 +56,19 @@ const fallbackCategory = (text) => {
     lowerText.includes('docker') ||
     lowerText.includes('kubernetes') ||
     lowerText.includes('aws') ||
-    lowerText.includes('ci/cd')
+    lowerText.includes('ci/cd') ||
+    lowerText.includes('site reliability') ||
+    lowerText.includes('sre') ||
+    lowerText.includes('deployment') ||
+    lowerText.includes('monitoring') ||
+    lowerText.includes('incident') ||
+    lowerText.includes('automation') ||
+    lowerText.includes('linux') ||
+    lowerText.includes('production systems') ||
+    lowerText.includes('service reliability') ||
+    lowerText.includes('release process') ||
+    lowerText.includes('release processes') ||
+    lowerText.includes('operational tasks')
   ) {
     return 'DevOps';
   }
@@ -62,7 +78,8 @@ const fallbackCategory = (text) => {
     lowerText.includes('etl') ||
     lowerText.includes('pipeline') ||
     lowerText.includes('spark') ||
-    lowerText.includes('warehouse')
+    lowerText.includes('warehouse') ||
+    lowerText.includes('data warehouse')
   ) {
     return 'Data Engineering';
   }
@@ -73,11 +90,12 @@ const fallbackCategory = (text) => {
 // Hugging Face category classifier.
 // First uses keyword rules for obvious cases.
 // If rules cannot decide, then it uses Hugging Face.
+// If Hugging Face fails, it safely falls back to the keyword classifier.
 const classifyJobCategory = async (jobText) => {
   const ruleBasedCategory = fallbackCategory(jobText);
 
   // If our keyword rules clearly identify the category, use it.
-  // This prevents obvious Backend jobs from being misclassified as Frontend.
+  // This keeps obvious jobs stable and avoids wrong AI classifications.
   if (ruleBasedCategory !== 'Other') {
     return ruleBasedCategory;
   }
@@ -94,16 +112,16 @@ const classifyJobCategory = async (jobText) => {
     // Some versions return an array when inputs is an array.
     // Some may return an object. This handles both safely.
     const firstResult = Array.isArray(result) ? result[0] : result;
-    const category = firstResult.labels && firstResult.labels[0];
+    const category = firstResult && firstResult.labels && firstResult.labels[0];
 
     if (ALLOWED_CATEGORIES.includes(category)) {
       return category;
     }
 
-    return 'Other';
+    return fallbackCategory(jobText);
   } catch (error) {
-    console.log('Hugging Face category classification failed. Using fallback.');
-    return 'Other';
+    console.error('Hugging Face category classification failed:', error.message);
+    return fallbackCategory(jobText);
   }
 };
 
