@@ -1,20 +1,27 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
-//Member 1
+import PrivateRoute from './components/PrivateRoute'
+import RoleRoute from './components/RoleRoute'
+
+// Member 1
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import ForgotPasswordPage from './pages/ForgotPasswordPage'
 import ResetPasswordPage from './pages/ResetPasswordPage'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
-// Member 2 pages
+
+// Member 2
 import JobListPage from './pages/JobListPage'
 import JobDetailPage from './pages/JobDetailPage'
 import SavedJobsPage from './pages/SavedJobsPage'
 import MyApplicationsPage from './pages/MyApplicationsPage'
 
+// Member 4 (you)
+import RecruiterDashboard from './pages/RecruiterDashboard'
+import CreateJobPage from './pages/CreateJobPage'
+
 // ⚠️ STUB placeholders for other members' pages
-// Replace each one with the real import when teammates submit
 const HomePage = () => <div style={{padding:32}}><h1>Home Page — M3 will implement this</h1></div>
 
 function App() {
@@ -37,8 +44,24 @@ function App() {
           <Route path="/jobs" element={<JobListPage />} />
           <Route path="/jobs/:id" element={<JobDetailPage />} />
 
-          {/* Job seeker protected routes */}
-          <Route path="/applications/my" element={<MyApplicationsPage />} />
+          {/* Job seeker routes */}
+          <Route path="/applications/my" element={
+            <PrivateRoute>
+              <MyApplicationsPage />
+            </PrivateRoute>
+          } />
+
+          {/* Recruiter routes */}
+          <Route path="/recruiter/dashboard" element={
+            <RoleRoute allowedRoles={["recruiter"]}>
+              <RecruiterDashboard />
+            </RoleRoute>
+          } />
+          <Route path="/recruiter/jobs/create" element={
+            <RoleRoute allowedRoles={["recruiter"]}>
+              <CreateJobPage />
+            </RoleRoute>
+          } />
 
           {/* Catch-all */}
           <Route path="*" element={<Navigate to="/" replace />} />
@@ -49,6 +72,5 @@ function App() {
     </AuthProvider>
   )
 }
-
 
 export default App
