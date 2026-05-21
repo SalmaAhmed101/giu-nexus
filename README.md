@@ -154,6 +154,17 @@ server/
 ### Rules
 - Never commit directly to `main`
 - Every change goes through a Pull Request
-- At least one teammate must review and approve before merging
+- The team lead must review and approve every PR before merging into main
 - Resolve all review comments before merging
 - Write meaningful commit messages — not `"fix"` or `"update"`
+- Continue using one feature branch per page or feature group (e.g. feature/job-detail-page, feature/saved-jobs)
+
+---
+
+## Contributors
+
+[Member 1 Salma Ahmed](https://github.com/SalmaAhmed101/giu-nexus/commits?author=SalmaAhmed101)
+[Member 2 Engy Rashdan](https://github.com/SalmaAhmed101/giu-nexus/commits?author=engymohamedtaher)
+[Member 3 Logien Mohamed](https://github.com/SalmaAhmed101/giu-nexus/commits?author=logienshawky)
+[Member 4 Malak tarek](https://github.com/SalmaAhmed101/giu-nexus/commits?author=malakelkomy)
+[Member 5 Nourine Rasmy](https://github.com/SalmaAhmed101/giu-nexus/commits?author=nourinerasmy16006612)
