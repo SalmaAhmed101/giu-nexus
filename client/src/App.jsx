@@ -5,7 +5,8 @@ import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import ForgotPasswordPage from './pages/ForgotPasswordPage'
 import ResetPasswordPage from './pages/ResetPasswordPage'
-
+import Navbar from './components/Navbar'
+import Footer from './components/Footer'
 // Member 2 pages
 import JobListPage from './pages/JobListPage'
 import JobDetailPage from './pages/JobDetailPage'
@@ -20,18 +21,19 @@ function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
+        <Navbar />
+
         <Routes>
           {/* Public routes */}
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/forgot-password" element={<ForgotPasswordPage />} />. 
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
-          {/* ⚠️ IMPORTANT: /jobs/saved and /jobs/recommended MUST come
-              BEFORE /jobs/:id — otherwise React Router matches
-              "saved" and "recommended" as job IDs */}
+
+          {/* Jobs routes */}
           <Route path="/jobs/saved" element={<SavedJobsPage />} />
-          <Route path="/jobs/recommended" element={<div style={{padding:32}}>Recommended — M3</div>} />
+          <Route path="/jobs/recommended" element={<div style={{ padding: 32 }}>Recommended — M3</div>} />
           <Route path="/jobs" element={<JobListPage />} />
           <Route path="/jobs/:id" element={<JobDetailPage />} />
 
@@ -41,9 +43,12 @@ function App() {
           {/* Catch-all */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
+
+        <Footer />
       </BrowserRouter>
     </AuthProvider>
   )
 }
+
 
 export default App
