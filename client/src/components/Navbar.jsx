@@ -23,7 +23,13 @@ function Navbar() {
             <Link to="/applications/my">My Applications</Link>
           </>
         )}
-
+        
+        {isAuthenticated && user?.role === "recruiter" && (
+  <>
+          <Link to="/recruiter/dashboard">Dashboard</Link>
+          <Link to="/recruiter/jobs/create">Post a Job</Link>
+          </>
+        )}
         {!isAuthenticated ? (
           <>
             <Link to="/login">Login</Link>
