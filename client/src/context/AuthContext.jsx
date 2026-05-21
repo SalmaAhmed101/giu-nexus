@@ -1,5 +1,11 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import api from "../services/api";
+import {
+  getToken,
+  getStoredUser,
+  saveAuthData,
+  clearAuthData,
+} from "../utils/tokenManager";
 
 const AuthContext = createContext(null);
 
@@ -13,56 +19,50 @@ export function AuthProvider({ children }) {
   const [authLoading, setAuthLoading] = useState(true);
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    const storedUser = localStorage.getItem("user");
+    const storedToken = getToken();
+    const storedUser = getStoredUser();
 
     if (storedToken && storedUser) {
-      try {
-        setToken(storedToken);
-        setUser(JSON.parse(storedUser));
-      } catch {
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-      }
+      setToken(storedToken);
+      setUser(storedUser);
     }
 
     setAuthLoading(false);
   }, []);
 
   function saveAuth(newToken, newUser) {
-    localStorage.setItem("token", newToken);
-    localStorage.setItem("user", JSON.stringify(newUser));
+    saveAuthData(newToken, newUser);
     setToken(newToken);
     setUser(newUser);
   }
 
   async function login(email, password) {
-  const { data } = await api.post("/auth/login", { email, password });
+    const { data } = await api.post("/auth/login", { email, password });
 
-  const token = data.token;
-  const user = data.user || data.data?.user;
+    const newToken = data.token;
+    const newUser = data.user || data.data?.user;
 
-  if (!token || !user) {
-    throw new Error("Login response missing token or user");
+    if (!newToken || !newUser) {
+      throw new Error("Login response missing token or user");
+    }
+
+    saveAuth(newToken, newUser);
+    return newUser;
   }
-
-  saveAuth(token, user);
-  return user;
-}
 
   async function register(formData) {
-  const { data } = await api.post("/auth/register", formData);
+    const { data } = await api.post("/auth/register", formData);
 
-  const token = data.token;
-  const user = data.user || data.data?.user;
+    const newToken = data.token;
+    const newUser = data.user || data.data?.user;
 
-  if (!token || !user) {
-    throw new Error("Register response missing token or user");
+    if (!newToken || !newUser) {
+      throw new Error("Register response missing token or user");
+    }
+
+    saveAuth(newToken, newUser);
+    return newUser;
   }
-
-  saveAuth(token, user);
-  return user;
-}
 
   async function logout() {
     try {
@@ -71,13 +71,12 @@ export function AuthProvider({ children }) {
       // Even if backend logout fails, clear frontend session.
     }
 
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    clearAuthData();
     setToken(null);
     setUser(null);
   }
 
-  const isAuthenticated = !!token;
+  const isAuthenticated = Boolean(token);
 
   return (
     <AuthContext.Provider
