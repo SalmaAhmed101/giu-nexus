@@ -113,42 +113,6 @@ There are three distinct user types, each with different permissions and views.
 
 ---
 
-## Project Structure
-
-```text
-server/
-├── config/
-│ └── db.js # MongoDB connection helper
-├── models/
-│ ├── User.js # User model
-│ ├── JobPost.js # Job post model
-│ └── Application.js # Application model
-├── controllers/
-│ ├── authController.js # Authentication logic
-│ ├── userController.js # User management
-│ ├── jobController.js # Job operations
-│ ├── applicationController.js # Application handling
-│ └── profileController.js # Profile management
-├── routes/
-│ ├── authRoutes.js # Authentication endpoints
-│ ├── userRoutes.js # User endpoints
-│ ├── jobRoutes.js # Job endpoints
-│ ├── applicationRoutes.js # Application endpoints
-│ └── profileRoutes.js # Profile endpoints
-├── middleware/
-│ ├── auth.js # Authentication & authorization
-│ └── errorHandler.js # Error handling middleware
-├── services/
-│ ├── hfService.js # HuggingFace client singleton
-│ └── emailService.js # Nodemailer helper
-├── server.js # Main application entry point
-├── .env # Environment variables
-├── .env.example # Environment variables template
-├── .gitignore # Git ignore rules
-└── README.md
-```
----
-
 ## Git Workflow
 
 ### Rules
@@ -163,8 +127,8 @@ server/
 
 ## Contributors
 
-[Member 1 Salma Ahmed](https://github.com/SalmaAhmed101/giu-nexus/commits?author=SalmaAhmed101)
-[Member 2 Engy Rashdan](https://github.com/SalmaAhmed101/giu-nexus/commits?author=engymohamedtaher)
-[Member 3 Logien Mohamed](https://github.com/SalmaAhmed101/giu-nexus/commits?author=logienshawky)
-[Member 4 Malak tarek](https://github.com/SalmaAhmed101/giu-nexus/commits?author=malakelkomy)
-[Member 5 Nourine Rasmy](https://github.com/SalmaAhmed101/giu-nexus/commits?author=nourinerasmy16006612)
+-[Member 1 Salma Ahmed](https://github.com/SalmaAhmed101/giu-nexus/commits?author=SalmaAhmed101)
+-[Member 2 Engy Rashdan](https://github.com/SalmaAhmed101/giu-nexus/commits?author=engymohamedtaher)
+-[Member 3 Logien Mohamed](https://github.com/SalmaAhmed101/giu-nexus/commits?author=logienshawky)
+-[Member 4 Malak tarek](https://github.com/SalmaAhmed101/giu-nexus/commits?author=malakelkomy)
+-[Member 5 Nourine Rasmy](https://github.com/SalmaAhmed101/giu-nexus/commits?author=nourinerasmy16006612)
