@@ -61,7 +61,7 @@ function JobDetailPage() {
         const { data } = await api.get(`/jobs/${id}`);
         // M2 response shape: { success, job: { _id, title, description, requirements,
         //   category, status, createdBy: { name, email }, ... } }
-        const jobData = data.job || data.data || data; //chnaged by salma to test
+        const jobData = data.job || data.data || data; //changed by salma to test
         setJob(jobData);
 
         // Check if the current user has already applied.
