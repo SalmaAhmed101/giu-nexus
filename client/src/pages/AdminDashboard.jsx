@@ -19,10 +19,14 @@ export default function AdminDashboard() {
 
   return (
     <div style={{ maxWidth: '900px', margin: '40px auto', padding: '0 20px' }}>
-      <h1>Admin Dashboard</h1>
+      <h1 style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--text-main)', letterSpacing: '-0.02em', marginBottom: '24px' }}>
+        Admin Dashboard
+      </h1>
 
       {/* Users by Role */}
-      <h2>Users by Role</h2>
+      <h2 style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-main)', letterSpacing: '-0.01em', marginBottom: '16px' }}>
+        Users by Role
+      </h2>
       <div style={{ display: 'flex', gap: '20px', marginBottom: '30px' }}>
         <div style={cardStyle}>
           <h3>Job Seekers</h3>
