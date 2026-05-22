@@ -30,6 +30,12 @@ import CreateJobPage from './pages/CreateJobPage'
 import EditJobPage from './pages/EditJobPage'
 import ApplicantsPage from './pages/ApplicantsPage'
 
+// Member 5 — Admin
+import AdminDashboard from './pages/AdminDashboard'
+import PendingRecruitersPage from './pages/PendingRecruitersPage'
+import AdminJobsPage from './pages/AdminJobsPage'
+import AdminUsersPage from './pages/AdminUsersPage'
+
 function App() {
   return (
     <AuthProvider>
@@ -75,6 +81,20 @@ function App() {
           } />
           <Route path="/recruiter/applicants/:jobId" element={
             <RoleRoute allowedRoles={["recruiter"]}><ApplicantsPage /></RoleRoute>
+          } />
+
+          {/* Admin */}
+          <Route path="/admin/dashboard" element={
+            <RoleRoute allowedRoles={["admin"]}><AdminDashboard /></RoleRoute>
+          } />
+          <Route path="/admin/recruiters" element={
+            <RoleRoute allowedRoles={["admin"]}><PendingRecruitersPage /></RoleRoute>
+          } />
+          <Route path="/admin/jobs" element={
+            <RoleRoute allowedRoles={["admin"]}><AdminJobsPage /></RoleRoute>
+          } />
+          <Route path="/admin/users" element={
+            <RoleRoute allowedRoles={["admin"]}><AdminUsersPage /></RoleRoute>
           } />
 
           {/* Catch-all */}
