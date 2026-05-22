@@ -9,36 +9,12 @@
 // teal=DevOps, orange=Data Engineering, grey=Other.
 
 const categoryColors = {
-  Frontend: {
-    bg: "#dcfce7",
-    text: "#166534",
-    border: "#86efac",
-  },
-  Backend: {
-    bg: "#dbeafe",
-    text: "#1e40af",
-    border: "#93c5fd",
-  },
-  "AI/ML": {
-    bg: "#f3e8ff",
-    text: "#6b21a8",
-    border: "#d8b4fe",
-  },
-  DevOps: {
-    bg: "#ccfbf1",
-    text: "#0f766e",
-    border: "#5eead4",
-  },
-  "Data Engineering": {
-    bg: "#ffedd5",
-    text: "#c2410c",
-    border: "#fdba74",
-  },
-  Other: {
-    bg: "#f3f4f6",
-    text: "#374151",
-    border: "#d1d5db",
-  },
+  Frontend:           { bg: '#dcfce7', text: '#166534', border: '#86efac' },
+  Backend:            { bg: '#dbeafe', text: '#1e40af', border: '#93c5fd' },
+  'AI/ML':            { bg: '#ede9fe', text: '#5b21b6', border: '#c4b5fd' },
+  DevOps:             { bg: '#ccfbf1', text: '#115e59', border: '#5eead4' },
+  'Data Engineering': { bg: '#fed7aa', text: '#9a3412', border: '#fdba74' },
+  Other:              { bg: '#f3f4f6', text: '#374151', border: '#d1d5db' },
 };
 
 export default categoryColors;
