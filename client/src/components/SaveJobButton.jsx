@@ -59,14 +59,37 @@ function SaveJobButton({ jobId, initialSaved = false, jobStatus = "open" }) {
           padding: "4px",
           opacity: isDisabled ? 0.4 : 1,
           transition: "transform 0.15s, opacity 0.15s",
-          fontSize: "1.25rem",
           lineHeight: 1,
         }}
         aria-label={saved ? "Unsave job" : "Save job"}
       >
-        {/* Filled bookmark = saved, outline = not saved */}
-        {saved ? "🔖" : "🏷️"}
+        {saved ? (
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="black"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M6 3h12c.55 0 1 .45 1 1v17l-7-4-7 4V4c0-.55.45-1 1-1z" />
+          </svg>
+        ) : (
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="black"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M6 3h12c.55 0 1 .45 1 1v17l-7-4-7 4V4c0-.55.45-1 1-1z" />
+          </svg>
+        )}
       </button>
+
       {/* Inline error — tiny, non-intrusive */}
       {error && (
         <span style={{ fontSize: "0.65rem", color: "#dc2626", marginTop: "2px" }}>

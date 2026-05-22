@@ -56,7 +56,18 @@ export default function ProfilePage() {
       <button
         onClick={handleExtractSkills}
         disabled={extracting}
-        style={{ marginTop: '0.5rem' }}
+        style={{
+          marginTop: '0.5rem',
+          backgroundColor: extracting ? '#c4b5fd' : '#7c3aed',
+          color: 'white',
+          border: 'none',
+          padding: '10px 18px',
+          borderRadius: '10px',
+          cursor: extracting ? 'not-allowed' : 'pointer',
+          fontWeight: '500',
+          fontSize: '14px',
+          boxShadow: '0 2px 6px rgba(0,0,0,0.1)'
+        }}
       >
         {extracting ? 'Extracting...' : 'Extract Skills from Bio'}
       </button>
@@ -71,8 +82,35 @@ export default function ProfilePage() {
       )}
 
       <div style={{ marginTop: '1.5rem', display: 'flex', gap: '1rem' }}>
-        <a href="/profile/edit">Edit Profile</a>
-        <a href="/profile/change-password">Change Password</a>
+        <a
+          href="/profile/edit"
+          style={{
+            border: '1px solid #7c3aed',
+            color: '#7c3aed',
+            padding: '10px 18px',
+            borderRadius: '10px',
+            textDecoration: 'none',
+            fontWeight: '500',
+            fontSize: '14px'
+          }}
+        >
+          Edit Profile
+        </a>
+
+        <a
+          href="/profile/change-password"
+          style={{
+            border: '1px solid #d1d5db',
+            color: '#374151',
+            padding: '10px 18px',
+            borderRadius: '10px',
+            textDecoration: 'none',
+            fontWeight: '500',
+            fontSize: '14px'
+          }}
+        >
+          Change Password
+        </a>
       </div>
     </div>
   );

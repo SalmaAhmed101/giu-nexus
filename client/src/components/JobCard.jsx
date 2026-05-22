@@ -61,7 +61,7 @@ function JobCard({ job, score, showUnsave = false, onUnsave }) {
           <span style={styles.metaChip}>{job.type}</span>
         )}
         {job.location && (
-          <span style={styles.metaChip}>📍 {job.location}</span>
+          <span style={styles.metaChip}>{job.location}</span>
         )}
       </div>
 

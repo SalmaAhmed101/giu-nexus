@@ -10,6 +10,14 @@ export default function EditProfilePage() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
+  const inputStyle = {
+    border: '1px solid #d1d5db',
+    borderRadius: '10px',
+    padding: '10px 12px',
+    fontSize: '15px',
+    outline: 'none'
+  };
+
   useEffect(() => {
     api.get('/profile')
       .then(r => { setForm({ name: r.data.user.name || '', bio: r.data.user.bio || '', profilePicture: r.data.user.profilePicture || '' }); setLoading(false); })
@@ -42,6 +50,7 @@ export default function EditProfilePage() {
           placeholder="Name"
           value={form.name}
           onChange={handleChange}
+          style={inputStyle}
         />
         <textarea
           name="bio"
@@ -49,18 +58,47 @@ export default function EditProfilePage() {
           value={form.bio}
           onChange={handleChange}
           rows={4}
+          style={inputStyle}
         />
         <input
           name="profilePicture"
           placeholder="Profile picture URL"
           value={form.profilePicture}
           onChange={handleChange}
+          style={inputStyle}
         />
         {error && <p style={{ color: 'red', fontSize: 13 }}>{error}</p>}
-        <button onClick={handleSubmit} disabled={saving}>
+
+        <button
+          onClick={handleSubmit}
+          disabled={saving}
+          style={{
+            backgroundColor: saving ? '#c4b5fd' : '#7c3aed',
+            color: 'white',
+            border: 'none',
+            padding: '10px 18px',
+            borderRadius: '10px',
+            cursor: saving ? 'not-allowed' : 'pointer',
+            fontWeight: '500',
+            fontSize: '14px'
+          }}
+        >
           {saving ? 'Saving...' : 'Save'}
         </button>
-        <button onClick={() => nav('/profile')} style={{ background: 'none', border: 'none', color: '#6b7280', cursor: 'pointer' }}>
+
+        <button
+          onClick={() => nav('/profile')}
+          style={{
+            background: 'none',
+            border: '1px solid #ef4444',
+            color: '#ef4444',
+            padding: '10px 18px',
+            borderRadius: '10px',
+            cursor: 'pointer',
+            fontWeight: '500',
+            fontSize: '14px'
+          }}
+        >
           Cancel
         </button>
       </div>
