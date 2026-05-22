@@ -18,11 +18,13 @@ function Navbar() {
         <Link to="/jobs">Jobs</Link>
 
         {isAuthenticated && user?.role === "jobSeeker" && (
-          <>
-            <Link to="/jobs/saved">Saved Jobs</Link>
-            <Link to="/applications/my">My Applications</Link>
-          </>
-        )}
+  <>
+    <Link to="/jobs/saved">Saved Jobs</Link>
+    <Link to="/applications/my">My Applications</Link>
+    <Link to="/jobs/recommended">Recommended Jobs</Link>
+    <Link to="/profile">My Profile</Link>
+  </>
+)}
         
         {isAuthenticated && user?.role === "recruiter" && (
   <>
