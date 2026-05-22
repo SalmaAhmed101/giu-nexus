@@ -27,9 +27,18 @@ function Navbar() {
 )}
         
         {isAuthenticated && user?.role === "recruiter" && (
-  <>
-          <Link to="/recruiter/dashboard">Dashboard</Link>
-          <Link to="/recruiter/jobs/create">Post a Job</Link>
+          <>
+            <Link to="/recruiter/dashboard">Dashboard</Link>
+            <Link to="/recruiter/jobs/create">Post a Job</Link>
+          </>
+        )}
+
+        {isAuthenticated && user?.role === "admin" && (
+          <>
+            <Link to="/admin/dashboard">Dashboard</Link>
+            <Link to="/admin/recruiters">Pending Recruiters</Link>
+            <Link to="/admin/jobs">Manage Jobs</Link>
+            <Link to="/admin/users">Manage Users</Link>
           </>
         )}
         {!isAuthenticated ? (
