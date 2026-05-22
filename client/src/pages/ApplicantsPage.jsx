@@ -22,7 +22,8 @@ function ApplicantsPage() {
     async function fetchApplicants() {
       try {
         const { data } = await getApplicants(jobId);
-        setApplicants(data.applicants || data.data || []);
+        console.log("Applicants response:", data);
+        setApplicants(data.applications || data.applicants || data.data || []);
         setJobTitle(data.jobTitle || data.job?.title || "");
       } catch (err) {
         setError(err.message);
@@ -115,21 +116,21 @@ function ApplicantsPage() {
                 <tr key={app._id} style={styles.tableRow}>
                   {/* Name */}
                   <td style={styles.td}>
-                    {app.applicant?.name || app.name || "—"}
+                    {app.user?.name || app.name || "—"}
                   </td>
 
                   {/* Email */}
                   <td style={styles.td}>
-                    {app.applicant?.email || app.email || "—"}
+                    {app.user?.email || app.email || "—"}
                   </td>
 
                   {/* Skills */}
                   <td style={styles.td}>
                     <div style={styles.skillsRow}>
-                      {(app.applicant?.skills || app.skills || []).length === 0 ? (
+                      {(app.user?.skills || app.skills || []).length === 0 ? (
                         <span style={styles.noSkills}>No skills listed</span>
                       ) : (
-                        (app.applicant?.skills || app.skills).map((skill, i) => (
+                        (app.user?.skills || app.skills).map((skill, i) => (
                           <span key={i} style={styles.skillChip}>
                             {skill}
                           </span>
@@ -137,7 +138,7 @@ function ApplicantsPage() {
                       )}
                     </div>
                   </td>
-
+                  
                   {/* Current status badge */}
                   <td style={styles.td}>
                     <ApplicationStatusBadge status={app.status} />

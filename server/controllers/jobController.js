@@ -1,7 +1,7 @@
 const JobPost = require('../models/JobPost');
 const User = require('../models/User');
 const hf = require('../services/hfService');
-
+const Application = require('../models/Application'); //added by salma to fix frontend problem
 // These are the only categories allowed by JobPost.js
 const ALLOWED_CATEGORIES = [
   'Frontend',
@@ -428,10 +428,26 @@ exports.getSavedJobs = async (req, res, next) => {
 
 // GET /api/v1/jobs/my-jobs
 // Protected route: recruiter sees their own posted jobs.
+//Edited by salma to fix frontend problem
 exports.getMyJobs = async (req, res, next) => {
   try {
-    const jobs = await JobPost.find({ createdBy: req.user._id })
+    // 1. Fetch normal, heavy Mongoose documents
+    const jobDocuments = await JobPost.find({ createdBy: req.user._id })
       .sort({ createdAt: -1 });
+
+    const jobs = [];
+
+    // 2. Loop through and safely convert them to objects manually
+    for (let doc of jobDocuments) {
+      // .toObject() extracts just the data fields, stripping the Mongoose lock
+      const jobObject = doc.toObject();
+      
+      // Calculate the count and attach it safely
+      const count = await Application.countDocuments({ job: jobObject._id });
+      jobObject.applicantCount = count;
+
+      jobs.push(jobObject);
+    }
 
     res.status(200).json({
       success: true,
