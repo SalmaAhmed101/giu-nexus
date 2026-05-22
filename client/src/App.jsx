@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
+import PrivateRoute from './components/PrivateRoute'
+import RoleRoute from './components/RoleRoute'
 
 // Member 1
 import LoginPage from './pages/LoginPage'
@@ -15,12 +17,18 @@ import JobDetailPage from './pages/JobDetailPage'
 import SavedJobsPage from './pages/SavedJobsPage'
 import MyApplicationsPage from './pages/MyApplicationsPage'
 
-// Member 3 — your pages
+// Member 3
 import HomePage from './pages/HomePage'
 import ProfilePage from './pages/ProfilePage'
 import EditProfilePage from './pages/EditProfilePage'
 import ChangePasswordPage from './pages/ChangePasswordPage'
 import RecommendedJobsPage from './pages/RecommendedJobsPage'
+
+// Member 4
+import RecruiterDashboard from './pages/RecruiterDashboard'
+import CreateJobPage from './pages/CreateJobPage'
+import EditJobPage from './pages/EditJobPage'
+import ApplicantsPage from './pages/ApplicantsPage'
 
 function App() {
   return (
@@ -42,10 +50,32 @@ function App() {
           <Route path="/jobs/:id" element={<JobDetailPage />} />
 
           {/* Job seeker */}
-          <Route path="/applications/my" element={<MyApplicationsPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/profile/edit" element={<EditProfilePage />} />
-          <Route path="/profile/change-password" element={<ChangePasswordPage />} />
+          <Route path="/applications/my" element={
+            <PrivateRoute><MyApplicationsPage /></PrivateRoute>
+          } />
+          <Route path="/profile" element={
+            <PrivateRoute><ProfilePage /></PrivateRoute>
+          } />
+          <Route path="/profile/edit" element={
+            <PrivateRoute><EditProfilePage /></PrivateRoute>
+          } />
+          <Route path="/profile/change-password" element={
+            <PrivateRoute><ChangePasswordPage /></PrivateRoute>
+          } />
+
+          {/* Recruiter */}
+          <Route path="/recruiter/dashboard" element={
+            <RoleRoute allowedRoles={["recruiter"]}><RecruiterDashboard /></RoleRoute>
+          } />
+          <Route path="/recruiter/jobs/create" element={
+            <RoleRoute allowedRoles={["recruiter"]}><CreateJobPage /></RoleRoute>
+          } />
+          <Route path="/recruiter/jobs/:id/edit" element={
+            <RoleRoute allowedRoles={["recruiter"]}><EditJobPage /></RoleRoute>
+          } />
+          <Route path="/recruiter/applicants/:jobId" element={
+            <RoleRoute allowedRoles={["recruiter"]}><ApplicantsPage /></RoleRoute>
+          } />
 
           {/* Catch-all */}
           <Route path="*" element={<Navigate to="/" replace />} />
