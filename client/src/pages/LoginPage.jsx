@@ -27,7 +27,7 @@ function LoginPage() {
       const user = await login(form.email, form.password);
 
       if (user.role === "recruiter") {
-        navigate("/jobs/my-jobs");
+        navigate("/recruiter/dashboard"); //changed by salma
       } else {
         navigate("/jobs");
       }
