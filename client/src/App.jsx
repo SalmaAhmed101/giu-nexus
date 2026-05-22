@@ -20,6 +20,8 @@ import MyApplicationsPage from './pages/MyApplicationsPage'
 // Member 4 (you)
 import RecruiterDashboard from './pages/RecruiterDashboard'
 import CreateJobPage from './pages/CreateJobPage'
+import EditJobPage from './pages/EditJobPage'
+import ApplicantsPage from './pages/ApplicantsPage'
 
 // ⚠️ STUB placeholders for other members' pages
 const HomePage = () => <div style={{padding:32}}><h1>Home Page — M3 will implement this</h1></div>
@@ -62,7 +64,17 @@ function App() {
               <CreateJobPage />
             </RoleRoute>
           } />
-
+          <Route path="/recruiter/jobs/:id/edit" element={
+            <RoleRoute allowedRoles={["recruiter"]}>
+              <EditJobPage />
+            </RoleRoute>
+          } />
+          <Route path="/recruiter/applicants/:jobId" element={
+            <RoleRoute allowedRoles={["recruiter"]}>
+              <ApplicantsPage />
+            </RoleRoute>
+          } />
+          
           {/* Catch-all */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
