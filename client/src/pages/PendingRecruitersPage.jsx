@@ -28,9 +28,11 @@ export default function PendingRecruitersPage() {
 
   return (
     <div style={{ maxWidth: '900px', margin: '40px auto', padding: '0 20px' }}>
-      <h1>Pending Recruiters</h1>
+      <h1 style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--text-main)', letterSpacing: '-0.02em', marginBottom: '24px' }}>
+        Pending recruiters
+      </h1>
       {recruiters.length === 0 ? (
-        <p>No pending recruiters.</p>
+        <p> No pending recruiters.</p>
       ) : (
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>

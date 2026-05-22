@@ -1,9 +1,3 @@
-// ⚠️  THIS FILE BELONGS TO MEMBER 3 (src/utils/categoryColors.js)
-// Member 2 wrote this because JobCard depends on it and M3 hasn't submitted yet.
-// When M3 submits their version, compare — if it matches these exact keys and values,
-// no changes needed in any of Member 2's files. If M3 changes the key names, update
-// the import in JobCard.jsx accordingly.
-//
 // The spec says exactly 6 labels. These are the EXACT strings the backend returns.
 // Color map matches the spec: green=Frontend, blue=Backend, purple=AI/ML,
 // teal=DevOps, orange=Data Engineering, grey=Other.

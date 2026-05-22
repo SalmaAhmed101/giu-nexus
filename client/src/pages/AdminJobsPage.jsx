@@ -30,7 +30,7 @@ export default function AdminJobsPage() {
 
   return (
     <div style={{ maxWidth: '900px', margin: '40px auto', padding: '0 20px' }}>
-      <h1>All Jobs</h1>
+      <h1 style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--text-main)', letterSpacing: '-0.02em', marginBottom: '24px' }}>All Jobs</h1>
       {jobs.length === 0 ? (
         <p>No jobs found.</p>
       ) : (

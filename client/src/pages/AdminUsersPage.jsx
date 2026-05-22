@@ -45,7 +45,7 @@ export default function AdminUsersPage() {
 
   return (
     <div style={{ maxWidth: '1000px', margin: '40px auto', padding: '0 20px' }}>
-      <h1>All Users</h1>
+      <h1 style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--text-main)', letterSpacing: '-0.02em', marginBottom: '24px' }}>All Users</h1>
 
       {/* Filters */}
       <div style={{ display: 'flex', gap: '16px', marginBottom: '20px' }}>

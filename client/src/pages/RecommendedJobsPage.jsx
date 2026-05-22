@@ -27,7 +27,7 @@ export default function RecommendedJobsPage() {
 
   return (
     <div style={{ maxWidth: 900, margin: '0 auto', padding: '2rem' }}>
-      <h2>Recommended for You</h2>
+      <h2 style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--text-main)', letterSpacing: '-0.02em', marginBottom: '24px' }}>Recommended for You</h2>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1rem', marginTop: '1rem' }}>
         {jobs.map(job => (
           <JobCard key={job._id} job={job} score={job.score} />

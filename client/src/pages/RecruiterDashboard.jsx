@@ -105,7 +105,7 @@ function RecruiterDashboard() {
 
               {/* Applicant count */}
               <p style={styles.applicantCount}>
-                👥 {job.applicantCount ?? 0} applicant
+                 {job.applicantCount ?? 0} applicant
                 {job.applicantCount !== 1 ? "s" : ""}
               </p>
 
