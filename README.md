@@ -1,11 +1,11 @@
 # GIU Nexus — AI-Powered Career & Talent Platform
 
 ## Team Members
-- [Member 1] (Team Leader) Salma Ahmed 16007446 T18
-- [Member 2] Lojy Shawky 16009778 T19
-- [Member 3] Nourine Rasmy 16006612 T17
-- [Member 4] Engy Rashdan 16007284 T15
-- [Member 5] Malak Tarek 16006062 T17
+- [Member 1] (Team Leader) Salma Ahmed 
+- [Member 2] Lojy Shawky @Logienshawky
+- [Member 3] Nourine Rasmy @nourinerasmy16006612
+- [Member 4] Engy Rashdan @engymohamedtaher
+- [Member 5] Malak Tarek @malakelkomy
 
 A full-stack MERN web application that connects university students with internship
 and job opportunities, powered by Hugging Face AI for skill extraction and job
@@ -54,28 +54,28 @@ There are three distinct user types, each with different permissions and views.
 ## Features
 
 ### Task 1
-- [ ] Git repository with branch-per-member workflow
-- [ ] Pull Request based merging with peer review
-- [ ] Mongoose schema design for Users, JobPosts, and Applications
-- [ ] README and .gitignore
+-  Git repository with branch-per-member workflow
+-  Pull Request based merging with peer review
+-  Mongoose schema design for Users, JobPosts, and Applications
+-  README and .gitignore
 
 ### Task 2
-- [ ] Express server setup
-- [ ] User authentication with JWT and bcrypt
-- [ ] Role-based access control middleware
-- [ ] CRUD operations for users, jobs, and applications
-- [ ] Hugging Face NER integration for skill extraction
-- [ ] Hugging Face zero-shot classification for job categories
-- [ ] Sentence embedding model for job recommendations
+-  Express server setup
+-  User authentication with JWT and bcrypt
+-  Role-based access control middleware
+-  CRUD operations for users, jobs, and applications
+-  Hugging Face NER integration for skill extraction
+-  Hugging Face zero-shot classification for job categories
+-  Sentence embedding model for job recommendations
 
 ### Task 3
-- [ ] React project setup with routing
-- [ ] Student registration, login, and profile pages
-- [ ] Job listings browse and filter page
-- [ ] Application submission and tracking UI
-- [ ] Recruiter dashboard
-- [ ] Admin panel
-- [ ] AI result rendering (skill chips, recommended jobs)
+-  React project setup with routing
+-  Student registration, login, and profile pages
+-  Job listings browse and filter page
+-  Application submission and tracking UI
+-  Recruiter dashboard
+-  Admin panel
+-  AI result rendering (skill chips, recommended jobs)
 
 ---
 
